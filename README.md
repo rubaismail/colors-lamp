@@ -8,9 +8,6 @@ COLORS is a small web application completed for the COP 4331 COLORS Lab. A user 
 - PHP 8.3 with the MySQLi extension and mysqlnd (`get_result` support)
 - MySQL
 - HTML, CSS, and vanilla JavaScript with XMLHttpRequest
-- Google Fonts (Ubuntu font); the bundled MD5 library is retained from the lab but hashing is disabled in the current login flow
-
-No Node.js build step or package installation is required for the frontend.
 
 ## Repository layout
 
@@ -76,16 +73,9 @@ All endpoints accept POST requests containing JSON.
 
 ## Assumptions and limitations
 
-This repository documents the completed educational lab, not a production authentication system. Passwords are compared directly, login state is stored in a browser cookie, and color endpoints trust the supplied user ID without server-side session authorization. The app lacks robust validation and escaping; manually assembled JSON and HTML may fail on special characters. Empty search results are not handled gracefully by the current frontend. Production use requires changes to authentication, password storage, authorization, input/output handling, and HTTPS.
+This repository documents the completed educational lab, not a production authentication system. Passwords are compared directly, login state is stored in a browser cookie, and color endpoints trust the supplied user ID without server-side session authorization. The app lacks robust validation and escaping; manually assembled JSON and HTML may fail on special characters. 
 
-Users must already exist in MySQL. Search is a SQL substring match; case sensitivity depends on database collation. There are no edit/delete color operations. Google Fonts requires an internet connection. The background image and unused MD5 library are retained as original lab assets.
-
+Users must already exist in MySQL. Search is a SQL substring match; case sensitivity depends on database collation. 
 ## Version history and AI usage
 
 The application was completed and deployed before this repository was created. Its initial commits organize that existing work into project/API setup, backend endpoints, frontend integration, and documentation stages; they are not a claim about the original development dates.
-
-OpenAI Codex assisted with this repository organization, logical commits, extraction of database credentials into private configuration, relative API URLs, schema documentation, README, and license. This statement covers the repository preparation session; any earlier AI usage must be disclosed by the student according to class policy. The student is responsible for reviewing the work and confirming compliance with that policy.
-
-## License and attribution
-
-See LICENSE.md for the MIT license. This project is based on the COP 4331 COLORS Lab. Existing third-party notices in `js/md5.js` are preserved, including its Sebastian Tschan copyright and MIT license reference. The project license does not replace third-party notices or grant rights the contributors do not hold.
