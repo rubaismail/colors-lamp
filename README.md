@@ -2,6 +2,10 @@
 
 COLORS is a small web application completed for the COP 4331 COLORS Lab. A user signs in with an existing account, adds color names to their list, searches their saved colors by a partial name, and logs out. The browser sends JSON requests to PHP endpoints; MySQL stores users and colors.
 
+## Live website
+
+[Open the COLORS application](http://cop4331c.space/index.html). Sign in with an existing lab account to add and search colors. No local setup is needed to use the deployed website.
+
 ## Technologies
 
 - Linux and Apache (the lab deployment uses Ubuntu and Apache 2.4)
@@ -59,7 +63,7 @@ For local development after configuring PHP, MySQL, and the private config file,
 php -S 127.0.0.1:8000 -t .
 ```
 
-Open http://127.0.0.1:8000/index.html. PHP's development server is for local testing only. Opening HTML with a `file://` URL will not run the backend.
+After starting that command on your own computer, open `http://127.0.0.1:8000/index.html` in its browser. `127.0.0.1` means your own computer, not the deployed server; this address only works while your local PHP server is running. To use the deployed application, use the live website link above. PHP's development server is for local testing only. Opening HTML with a `file://` URL will not run the backend.
 
 ## API overview
 
