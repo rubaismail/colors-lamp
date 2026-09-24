@@ -1,0 +1,23 @@
+# Local credentials and server configuration
+.env
+.env.*
+*.local.php
+colors-config.php
+config.php
+*.pem
+*.key
+.htaccess
+*.conf
+# Database exports, logs, and backups
+*.sql
+!database/schema.sql
+*.log
+*.bak
+*.backup
+*.tar*
+*.zip
+# Editor and operating-system files
+.DS_Store
+.idea/
+.vscode/
+*~
