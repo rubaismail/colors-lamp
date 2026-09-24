@@ -80,6 +80,3 @@ All endpoints accept POST requests containing JSON.
 This repository documents the completed educational lab, not a production authentication system. Passwords are compared directly, login state is stored in a browser cookie, and color endpoints trust the supplied user ID without server-side session authorization. The app lacks robust validation and escaping; manually assembled JSON and HTML may fail on special characters. 
 
 Users must already exist in MySQL. Search is a SQL substring match; case sensitivity depends on database collation. 
-## Version history and AI usage
-
-The application was completed and deployed before this repository was created. Its initial commits organize that existing work into project/API setup, backend endpoints, frontend integration, and documentation stages; they are not a claim about the original development dates.
