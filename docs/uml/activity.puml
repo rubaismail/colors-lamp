@@ -2,66 +2,44 @@
 skinparam backgroundColor white
 skinparam shadowing false
 skinparam defaultFontName SansSerif
-skinparam defaultFontSize 14
-skinparam activityBackgroundColor #EFF6FF
-skinparam activityBorderColor #2563EB
-skinparam ArrowColor #334155
-title COLORS — Activity Diagram\nLogin, add, search, and logout
-|User / browser|
+skinparam defaultFontSize 16
+skinparam activityBackgroundColor #F2F2F2
+skinparam activityBorderColor #777777
+skinparam activityDiamondBackgroundColor #F2F2F2
+skinparam activityDiamondBorderColor #777777
+skinparam ArrowColor #333333
+title COLORS — Activity Diagram
 start
-:Open index.html;
+:User opens the app;
+:Enter login credentials;
+:Check credentials against Users table;
+while (Credentials invalid?) is (yes)
+  :Show login error;
+  :Re-enter login credentials;
+  :Check credentials against Users table;
+endwhile (no)
+:Save login cookie;
+:Load color management page;
 repeat
-  :Enter login and password;\nPOST Login.php;
-  |PHP API / MySQL|
-  :Look up Users by Login and Password;
-  if (Account found?) then (yes)
-    :Return id, firstName, lastName;
+  if (User wants to search?) then (yes)
+    :Enter a color name to search;
+    :Query Colors table\nfor this user;
+    :Display matching results\nwhen returned;
   else (no)
-    :Return id = 0 and error;
-    |User / browser|
-    :Display incorrect-credentials message;
-  endif
-  |User / browser|
-repeat while (Returned id < 1?) is (yes) not (no)
-:Save identity cookie (20 minutes);\nOpen color.html and readCookie();
-if (Restored userId < 0?) then (yes)
-  :Redirect to index.html;
-  stop
-endif
-repeat
-  :Choose Add, Search, or Log Out;
-  if (Add?) then (yes)
-    :Enter color name;\nPOST AddColor.php with color, userId;
-    |PHP API / MySQL|
-    :INSERT Colors (UserId, Name);\nReturn empty error on success;
-    |User / browser|
-    :On HTTP 200, show\n"Color has been added";
-    note right
-      Current UI does not inspect
-      the returned error field.
-    end note
-  elseif (Search?) then (yes)
-    :Enter search text;\nPOST SearchColors.php with search, userId;
-    |PHP API / MySQL|
-    :SELECT color names using\nName LIKE %search% AND UserID = userId;
-    if (Matches found?) then (yes)
-      :Return results array;
-      |User / browser|
-      :Render matching color names;
+    if (User wants to add a color?) then (yes)
+      :Enter color name;
+      :Insert record into Colors\nwith the user's ID;
+      :Show confirmation message;
     else (no)
-      |PHP API / MySQL|
-      :Return "No Records Found" error\nwithout a results array;
-      |User / browser|
-      :Callback attempts results.length;\nJavaScript error interrupts rendering;
+      :Remain on color management page;
     endif
-  else (Log Out)
-    :Clear in-memory identity;\nExpire identity cookie;\nRedirect to index.html;
   endif
-repeat while (Log Out selected?) is (no) not (yes)
+repeat while (Continue using the app?) is (yes) not (no: Log Out)
+:Clear login cookie and user state;
+:Return to login page;
 stop
 legend bottom
-Scope: normal HTTP/DB operation plus invalid login and empty search.
-Connection, SQL, malformed input, and transport failures are omitted.
-Cookie state is not a server-side session; API calls trust userId.
+Existing lab account required; no registration flow.
+High-level normal flow; error-handling scope is documented in README.md.
 endlegend
 @enduml

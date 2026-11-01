@@ -16,7 +16,9 @@ The lab user can log in, add a color, search saved colors, and log out. An accou
 
 ## Activity Diagram
 
-The activity follows login, invalid-credential retry, cookie restoration, repeated add/search operations, and logout. Swimlanes distinguish browser actions from PHP/MySQL processing. It includes the implemented empty-search behavior: the API omits `results` and the frontend callback fails when reading `results.length`. It does not model every connection, SQL, or transport failure.
+The activity presents a simplified user workflow: login with retry after invalid credentials, save the login cookie, search or add colors, repeat, and log out. It assumes an existing account and normal database/HTTP operation. The application has no registration flow, separate color-value field, or explicit input-validation step.
+
+To keep the diagram readable, it omits cookie-restoration failures, transport/SQL errors, and the empty-search failure path. “Display matching results when returned” covers successful searches only: when no records match, the API omits `results` and the current frontend callback fails while reading `results.length`. The add confirmation is displayed on HTTP 200 without inspecting the API error field. “Continue using the app?” is a user decision, not a literal dialog; its exit corresponds to clicking Log Out.
 
 ![Activity Diagram](activity.png)
 
