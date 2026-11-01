@@ -1,0 +1,38 @@
+@startuml
+!pragma layout smetana
+left to right direction
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 15
+skinparam ArrowColor #334155
+skinparam usecaseBackgroundColor #EFF6FF
+skinparam usecaseBorderColor #2563EB
+skinparam packageStyle rectangle
+title COLORS — Use Case Diagram
+actor "Lab user" as User
+rectangle "COLORS web application" {
+  usecase "Log in" as Login
+  usecase "Add a color" as Add
+  usecase "Search saved colors" as Search
+  usecase "Log out" as Logout
+}
+User -- Login
+User -- Add
+User -- Search
+User -- Logout
+note right of Login
+  Requires an existing Users record.
+  No account registration UI exists.
+end note
+note right of Search
+  Add and search use the user ID
+  restored from the browser cookie.
+  Login is a normal-flow precondition,
+  not a server-enforced authorization check.
+end note
+note bottom of Logout
+  Clears browser login state and
+  returns to the login page.
+end note
+@enduml
