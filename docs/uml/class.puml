@@ -1,0 +1,81 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 14
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #EFF6FF
+skinparam classBorderColor #2563EB
+skinparam ArrowColor #334155
+hide empty members
+title COLORS — Class Diagram\nConceptual module and domain model of the procedural implementation
+class "Browser controller\njs/code.js" as Browser <<module>> {
+  userId : Number
+  firstName : String
+  lastName : String
+  + doLogin()
+  + saveCookie()
+  + readCookie()
+  + doLogout()
+  + addColor()
+  + searchColor()
+}
+class "Login.php" as Login <<endpoint>> {
+  + getRequestInfo()
+  + sendResultInfoAsJson(obj)
+  + returnWithError(err)
+  + returnWithInfo(firstName, lastName, id)
+}
+class "AddColor.php" as Add <<endpoint>> {
+  + getRequestInfo()
+  + sendResultInfoAsJson(obj)
+  + returnWithError(err)
+}
+class "SearchColors.php" as Search <<endpoint>> {
+  + getRequestInfo()
+  + sendResultInfoAsJson(obj)
+  + returnWithError(err)
+  + returnWithInfo(searchResults)
+}
+class "database.php" as DB <<module>> {
+  + connectDatabase() : mysqli
+}
+class User <<entity>> {
+  ID : int {PK, auto increment}
+  FirstName : varchar(50)
+  LastName : varchar(50)
+  Login : varchar(50)
+  Password : varchar(50)
+}
+class Color <<entity>> {
+  ID : int {PK, auto increment}
+  Name : varchar(50)
+  UserID : int
+}
+Browser ..> Login : POST login, password
+Browser ..> Add : POST color, userId
+Browser ..> Search : POST search, userId
+Login ..> DB : connects
+Add ..> DB : connects
+Search ..> DB : connects
+Login ..> User : SELECT from Users
+Add ..> Color : INSERT into Colors
+Search ..> Color : SELECT from Colors
+User "1" -- "0..*" Color : owns (intended relationship)
+note bottom of DB
+  Reads private configuration outside
+  the web root; returns a MySQLi connection.
+end note
+note bottom of User
+  User and Color map to Users and Colors tables.
+  Multiplicity expresses intended ownership.
+  The schema declares no foreign key, and
+  the API does not validate user ownership.
+end note
+legend bottom
+<<module>> and <<endpoint>> group existing functions; these are not PHP/JS classes.
+<<entity>> models stored records, not implemented ORM classes.
+Dependencies show calls or data access; there is no inheritance hierarchy.
+endlegend
+@enduml
