@@ -1,0 +1,67 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 14
+skinparam activityBackgroundColor #EFF6FF
+skinparam activityBorderColor #2563EB
+skinparam ArrowColor #334155
+title COLORS — Activity Diagram\nLogin, add, search, and logout
+|User / browser|
+start
+:Open index.html;
+repeat
+  :Enter login and password;\nPOST Login.php;
+  |PHP API / MySQL|
+  :Look up Users by Login and Password;
+  if (Account found?) then (yes)
+    :Return id, firstName, lastName;
+  else (no)
+    :Return id = 0 and error;
+    |User / browser|
+    :Display incorrect-credentials message;
+  endif
+  |User / browser|
+repeat while (Returned id < 1?) is (yes) not (no)
+:Save identity cookie (20 minutes);\nOpen color.html and readCookie();
+if (Restored userId < 0?) then (yes)
+  :Redirect to index.html;
+  stop
+endif
+repeat
+  :Choose Add, Search, or Log Out;
+  if (Add?) then (yes)
+    :Enter color name;\nPOST AddColor.php with color, userId;
+    |PHP API / MySQL|
+    :INSERT Colors (UserId, Name);\nReturn empty error on success;
+    |User / browser|
+    :On HTTP 200, show\n"Color has been added";
+    note right
+      Current UI does not inspect
+      the returned error field.
+    end note
+  elseif (Search?) then (yes)
+    :Enter search text;\nPOST SearchColors.php with search, userId;
+    |PHP API / MySQL|
+    :SELECT color names using\nName LIKE %search% AND UserID = userId;
+    if (Matches found?) then (yes)
+      :Return results array;
+      |User / browser|
+      :Render matching color names;
+    else (no)
+      |PHP API / MySQL|
+      :Return "No Records Found" error\nwithout a results array;
+      |User / browser|
+      :Callback attempts results.length;\nJavaScript error interrupts rendering;
+    endif
+  else (Log Out)
+    :Clear in-memory identity;\nExpire identity cookie;\nRedirect to index.html;
+  endif
+repeat while (Log Out selected?) is (no) not (yes)
+stop
+legend bottom
+Scope: normal HTTP/DB operation plus invalid login and empty search.
+Connection, SQL, malformed input, and transport failures are omitted.
+Cookie state is not a server-side session; API calls trust userId.
+endlegend
+@enduml
