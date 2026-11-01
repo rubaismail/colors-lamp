@@ -5,7 +5,7 @@ These diagrams model the existing application at commit `7ff224c`, using `js/cod
 | Diagram | Editable source | Rendered diagram |
 | --- | --- | --- |
 | Use Case | [usecase.puml](usecase.puml) | [usecase.png](usecase.png) |
-| Activity | [activity.puml](activity.puml) | [activity.png](activity.png) |
+| Activity | [activity-simple.puml](activity-simple.puml) | [activity-simple.png](activity-simple.png) |
 | Class | [class.puml](class.puml) | [class.png](class.png) |
 
 ## Use Case Diagram
@@ -20,7 +20,7 @@ The activity presents a simplified user workflow: login with retry after invalid
 
 To keep the diagram readable, it omits cookie-restoration failures, transport/SQL errors, and the empty-search failure path. “Display matching results when returned” covers successful searches only: when no records match, the API omits `results` and the current frontend callback fails while reading `results.length`. The add confirmation is displayed on HTTP 200 without inspecting the API error field. “Continue using the app?” is a user decision, not a literal dialog; its exit corresponds to clicking Log Out.
 
-![Activity Diagram](activity.png)
+![Simplified Activity Diagram](activity-simple.png)
 
 ## Class Diagram
 
