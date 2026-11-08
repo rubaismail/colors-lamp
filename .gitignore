@@ -21,3 +21,8 @@ config.php
 .idea/
 .vscode/
 *~
+
+# Local lint dependencies and caches
+node_modules/
+.eslintcache
+.stylelintcache
