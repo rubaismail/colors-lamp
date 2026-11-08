@@ -80,3 +80,41 @@ All endpoints accept POST requests containing JSON.
 This repository documents the completed educational lab, not a production authentication system. Passwords are compared directly, login state is stored in a browser cookie, and color endpoints trust the supplied user ID without server-side session authorization. The app lacks robust validation and escaping; manually assembled JSON and HTML may fail on special characters. 
 
 Users must already exist in MySQL. Search is a SQL substring match; case sensitivity depends on database collation. 
+
+## Continuous integration and linting
+
+The [Lint workflow](https://github.com/rubaismail/colors-lamp/actions/workflows/lint.yml)
+runs on every push to any branch and every pull request. It installs the locked
+development dependencies with `npm ci`, then checks HTML, CSS, and JavaScript in
+separate steps. Any lint error fails the workflow; CSS and JavaScript warnings
+also fail their checks.
+
+Node.js 22 is used only for lint tools. Apache, PHP, and MySQL still run the
+application; CI does not start the application or require database credentials.
+
+To run the same checks locally, install Node.js 22 and run:
+
+```bash
+npm ci
+npm run lint
+```
+
+Individual checks are `npm run lint:html`, `npm run lint:css`, and
+`npm run lint:js`.
+
+- HTMLHint uses `.htmlhintrc` to check document structure, attributes, and IDs.
+- Stylelint uses `.stylelintrc.json` and the standard rules. The ID naming rule
+  permits the app's existing camelCase IDs and kebab-case IDs.
+- ESLint uses `eslint.config.mjs` and the recommended rules. Browser scripts are
+  treated as classic scripts, and the `exported` comment in `js/code.js` identifies
+  the functions called from HTML. The bundled MD5 helper is checked too.
+
+If CI fails, open the failed run in **Actions**, expand the failing lint step,
+fix the reported file and line locally, run `npm run lint`, and push the fix.
+Before submitting, verify that the run for the final commit is green. Submit
+that commit's URL, not the branch URL. Do not commit `node_modules`, caches, or
+lint reports; `package-lock.json` is committed so CI installs consistent tools.
+
+Tool references: [HTMLHint configuration](https://htmlhint.com/configuration/),
+[Stylelint configuration](https://stylelint.io/user-guide/configure/), and
+[ESLint configuration](https://eslint.org/docs/latest/use/configure/configuration-files).
